@@ -9,23 +9,23 @@
 </head>
 <body>
     <div class="container">
-        <div class="heading">CRYPTO SQUARE</div>
+        <h1>CRYPTO SQUARE</h1>
         <form>
-        <div class="inputs">
+        <div class="input-group">
             <div>
-            <input id="text" type="text" placeholder="Enter String" required>
+            <input id="text" type="text" placeholder="Enter String" name="text" required>
         </div>
          <div>
-            <input id="grid" type="number" placeholder="Enter Grid" required>
+            <input id="grid" type="number" placeholder="Enter Grid" name="grid" required>
         </div>
         </div>
         
         <div class="display" >
             <!-- Output Display  Here -->
         </div>
-        <div class="button">
-            <button id="encrypt" onclick="encryption()">Encrypt</button>
-            <button id="decrypt" onclick="decryption()">Decrypt</button>
+        <div class="button-group">
+            <button type="submit" id="encrypt" onsubmit="encryption(event)">Encrypt</button>
+            <button type="button" id="decrypt" onclick="decryption(event)">Decrypt</button>
         </div>
     </form>
     </div>

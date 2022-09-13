@@ -1,68 +1,66 @@
 "use strict";
-var text = document.getElementById("text");
-var grid = document.getElementById("grid");
-var display = document.querySelector(".display");
-let matrixArray = [[], []];
-let m = 0;
-let n = 0;
-let whiteSpaceIndex = [];
-let index = 0;
-let count = 0;
-let newStr = "";
+const text = document.getElementById("text");
+const grid = document.getElementById("grid");
+const matrixArray = [[], []];
+const whiteSpaceIndex = [];
+let matrixIterator;
+let newStr;
 function encryption() {
     text.value = text.value.replace(/[%20]/g, " ");
     text.value = text.value.replace(/[^a-zA-Z" "]/g, '');
-    console.log(text.value);
     if (text.value == "" || +grid.value < 1)
         return;
     whiteSpaceIndex.splice(0);
     newStr = "";
-    m = +(grid.value);
-    for (var index = 0; index < text.value.length; index++) {
+    //making new string with no spaces and filling whitespace array
+    for (let index = 0; index < text.value.length; index++) {
         if (text.value[index] != " ")
             newStr += text.value[index];
         else {
             whiteSpaceIndex.push(index);
         }
     }
-    let k = 0;
+    // filling matrix
+    let iterator = 0;
     for (let i = 0; i < newStr.length; i++) {
         matrixArray[i] = [];
-        for (let j = 0; j < m; j++) {
-            matrixArray[i].push(newStr.charAt(k++));
+        for (let j = 0; j < +(grid.value); j++) {
+            matrixArray[i].push(newStr.charAt(iterator++));
         }
     }
+    //Encrypted String
     let output = "";
-    for (let i = 0; i < m; i++) {
+    for (let i = 0; i < +(grid.value); i++) {
         for (let j = 0; j < newStr.length; j++) {
             output += matrixArray[j][i];
         }
     }
     text.value = "";
     grid.value = "";
-    display.style.display = "block";
-    display.innerText = output;
+    document.querySelector('.display').style.display = "block";
+    document.querySelector('.display').innerText = output;
 }
 function decryption() {
+    //if user press directly decrypt without encrypting the stirng
     if (newStr == "") {
         alert("Kindly do encrytion first");
         return;
     }
-    index = 0;
-    count = 0;
+    let spaceIterator = 0;
+    matrixIterator = 0;
     let decryptedStrv = "";
-    for (let i = 0; i < newStr.length; i++) {
-        for (let j = 0; j < m; j++) {
-            if (whiteSpaceIndex[index] == count) {
+    for (let i = 0; i < matrixArray.length; i++) {
+        for (let j = 0; j < matrixArray[0].length; j++) {
+            if (whiteSpaceIndex[spaceIterator] == matrixIterator) {
                 decryptedStrv = decryptedStrv + " " + matrixArray[i][j];
-                index++;
-                count++;
+                spaceIterator++;
+                matrixIterator++;
             }
             else {
                 decryptedStrv += matrixArray[i][j];
             }
-            count++;
+            matrixIterator++;
         }
     }
-    display.innerText = decryptedStrv;
+    document.querySelector('.display').innerText = decryptedStrv;
 }

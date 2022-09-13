@@ -1,73 +1,71 @@
-var text = <HTMLInputElement>document.getElementById("text");
-var grid = <HTMLInputElement>document.getElementById("grid");
-var display = <HTMLInputElement>document.querySelector(".display");
-let matrixArray: string[][] = [[], []];
-let m: number = 0;
-let n: number = 0;
-let whiteSpaceIndex: number[] = [];
-let index:number = 0;
-let count:number = 0;
-let newStr: string = "";
+const text = <HTMLInputElement>document.getElementById("text");
+const grid = <HTMLInputElement>document.getElementById("grid");
+const matrixArray: string[][] = [[], []];
+const whiteSpaceIndex: number[] = [];
+let matrixIterator: number;
+let newStr: string;
 
 function encryption() {
-    text.value = text.value.replace(/[%20]/g," ");
+    text.value = text.value.replace(/[%20]/g, " ");
     text.value = text.value.replace(/[^a-zA-Z" "]/g, '');
-    console.log(text.value);
-    if(text.value=="" || +grid.value<1)
-    return;
+    
+    if (text.value == "" || +grid.value < 1)
+        return;
+
     whiteSpaceIndex.splice(0);
     newStr = "";
-    m = +(grid.value);
-    for (var index = 0; index < text.value.length; index++) {
+    //making new string with no spaces and filling whitespace array
+    for (let index = 0; index < text.value.length; index++) {
         if (text.value[index] != " ")
             newStr += text.value[index];
         else {
             whiteSpaceIndex.push(index);
         }
-    }    
-    let k = 0;
+    }
+    // filling matrix
+    let iterator = 0;
     for (let i = 0; i < newStr.length; i++) {
         matrixArray[i] = [];
-        for (let j = 0; j < m; j++) {
-            matrixArray[i].push(newStr.charAt(k++));
+        for (let j = 0; j < +(grid.value); j++) {
+            matrixArray[i].push(newStr.charAt(iterator++));
         }
     }
+
+    //Encrypted String
     let output: string = "";
-    for (let i = 0; i < m; i++) {
+    for (let i = 0; i < +(grid.value); i++) {
         for (let j = 0; j < newStr.length; j++) {
             output += matrixArray[j][i];
         }
     }
-    text.value="";
-    grid.value="";
-    display.style.display = "block";
-    display.innerText = output;
+    text.value = "";
+    grid.value = "";
+    (document.querySelector('.display') as HTMLInputElement).style.display = "block";
+    (document.querySelector('.display') as HTMLInputElement).innerText = output;
 }
 
 
 function decryption() {
-    if(newStr == "")
-    {
-
+    if (newStr == "") {
         alert("Kindly do encrytion first");
         return;
     }
-    index=0;
-    count=0;
+    let index: number = 0;
+    matrixIterator = 0;
     let decryptedStrv: string = "";
-    for (let i = 0; i < newStr.length; i++) {
+    for (let i = 0; i < matrixArray.length; i++) {
 
-        for (let j = 0; j < m; j++) {
-            if (whiteSpaceIndex[index] == count) {
+        for (let j = 0; j < matrixArray[0].length; j++) {
+            if (whiteSpaceIndex[index] == matrixIterator) {
                 decryptedStrv = decryptedStrv + " " + matrixArray[i][j];
                 index++;
-                count++;
+                matrixIterator++;
             }
             else {
                 decryptedStrv += matrixArray[i][j];
             }
-            count++;
+            matrixIterator++;
         }
     }
-    display.innerText = decryptedStrv;
+    (document.querySelector('.display') as HTMLInputElement).innerText = decryptedStrv;
 }
