@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Crypto Square</title>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">CRYPTO SQUARE</div>
+        <form>
+        <div class="inputs">
+            <div>
+            <input id="text" type="text" placeholder="Enter String" required>
+        </div>
+         <div>
+            <input id="grid" type="number" placeholder="Enter Grid" required>
+        </div>
+        </div>
+        
+        <div class="display" >
+            <!-- Output Display  Here -->
+        </div>
+        <div class="button">
+            <button id="encrypt" onclick="encryption()">Encrypt</button>
+            <button id="decrypt" onclick="decryption()">Decrypt</button>
+        </div>
+    </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
