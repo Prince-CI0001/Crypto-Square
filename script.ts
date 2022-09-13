@@ -5,7 +5,9 @@ const whiteSpaceIndex: number[] = [];
 let matrixIterator: number;
 let newStr: string;
 
-function encryption() {
+function encryption(event : Event) {
+    event.preventDefault();
+    console.log(event);
     text.value = text.value.replace(/[%20]/g, " ");
     text.value = text.value.replace(/[^a-zA-Z" "]/g, '');
     

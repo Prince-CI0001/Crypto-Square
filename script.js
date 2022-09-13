@@ -5,7 +5,9 @@ const matrixArray = [[], []];
 const whiteSpaceIndex = [];
 let matrixIterator;
 let newStr;
-function encryption() {
+function encryption(event) {
+    event.preventDefault();
+    console.log(event);
     text.value = text.value.replace(/[%20]/g, " ");
     text.value = text.value.replace(/[^a-zA-Z" "]/g, '');
     if (text.value == "" || +grid.value < 1)
@@ -41,19 +43,18 @@ function encryption() {
     document.querySelector('.display').innerText = output;
 }
 function decryption() {
-    //if user press directly decrypt without encrypting the stirng
     if (newStr == "") {
         alert("Kindly do encrytion first");
         return;
     }
-    let spaceIterator = 0;
+    let index = 0;
     matrixIterator = 0;
     let decryptedStrv = "";
     for (let i = 0; i < matrixArray.length; i++) {
         for (let j = 0; j < matrixArray[0].length; j++) {
-            if (whiteSpaceIndex[spaceIterator] == matrixIterator) {
+            if (whiteSpaceIndex[index] == matrixIterator) {
                 decryptedStrv = decryptedStrv + " " + matrixArray[i][j];
-                spaceIterator++;
+                index++;
                 matrixIterator++;
             }
             else {
