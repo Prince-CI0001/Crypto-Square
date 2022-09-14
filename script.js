@@ -45,10 +45,12 @@ function encryption(event) {
     output = output + "|" + btoa(encode);
     text.value = "";
     grid.value = "";
-    document.querySelector('.display').style.display = "block";
     document.querySelector('.display').innerText = output;
+    document.querySelector('.display').style.display = "block";
 }
 function decryption(event) {
+    if (text.value == "")
+        return;
     event.preventDefault();
     const index = text.value.lastIndexOf("|");
     const str = text.value.substring(0, index);

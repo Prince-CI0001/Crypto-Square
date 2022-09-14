@@ -53,13 +53,14 @@ function encryption(event: Event) {
     output = output + "|" + btoa(encode);
     text.value = "";
     grid.value = "";
-    (document.querySelector('.display') as HTMLInputElement).style.display = "block";
     (document.querySelector('.display') as HTMLInputElement).innerText = output;
+    (document.querySelector('.display') as HTMLInputElement).style.display = "block";
 }
 
 
 function decryption(event: Event) {
-
+    if(text.value=="")
+    return;
     event.preventDefault();
     const index = text.value.lastIndexOf("|");
     const str = text.value.substring(0, index);
