@@ -1,15 +1,13 @@
 "use strict";
-const text = document.getElementById("text");
-const grid = document.getElementById("grid");
+let text = document.getElementById("text");
+let grid = document.getElementById("grid");
 const matrixArray = [[], []];
 const whiteSpaceIndex = [];
 let matrixIterator;
 let newStr;
+let output = "";
 function encryption(event) {
     event.preventDefault();
-    console.log(event);
-    text.value = text.value.replace(/[%20]/g, " ");
-    text.value = text.value.replace(/[^a-zA-Z" "]/g, '');
     if (text.value == "" || +grid.value < 1)
         return;
     whiteSpaceIndex.splice(0);
@@ -31,37 +29,69 @@ function encryption(event) {
         }
     }
     //Encrypted String
-    let output = "";
     for (let i = 0; i < +(grid.value); i++) {
         for (let j = 0; j < newStr.length; j++) {
             output += matrixArray[j][i];
         }
     }
+    //encoding + output
+    let encode = "";
+    for (let i = 0; i < whiteSpaceIndex.length; i++) {
+        if (i == whiteSpaceIndex.length - 1)
+            encode += whiteSpaceIndex[i];
+        else
+            encode += whiteSpaceIndex[i] + "-";
+    }
+    output = output + "|" + btoa(encode);
     text.value = "";
     grid.value = "";
     document.querySelector('.display').style.display = "block";
     document.querySelector('.display').innerText = output;
 }
-function decryption() {
-    if (newStr == "") {
-        alert("Kindly do encrytion first");
-        return;
+function decryption(event) {
+    event.preventDefault();
+    const index = text.value.lastIndexOf("|");
+    const str = text.value.substring(0, index);
+    const whitespace = (atob(text.value.substring(index + 1))).split("-");
+    const matrixCol = Math.floor(str.length / (+grid.value));
+    let matrixRem = Math.floor(str.length % (+grid.value));
+    let increaseCounter = 0;
+    if (matrixRem > 0)
+        increaseCounter = 1;
+    let iterator = 0;
+    for (let i = 0; i < str.length; i++) {
+        matrixArray[i] = [];
+        for (let j = 0; j < matrixCol + increaseCounter; j++) {
+            matrixArray[i].push(str.charAt(iterator++));
+        }
+        if (matrixRem > 0)
+            matrixRem--;
+        if (matrixRem <= 0)
+            increaseCounter = 0;
     }
-    let index = 0;
     matrixIterator = 0;
-    let decryptedStrv = "";
-    for (let i = 0; i < matrixArray.length; i++) {
-        for (let j = 0; j < matrixArray[0].length; j++) {
-            if (whiteSpaceIndex[index] == matrixIterator) {
-                decryptedStrv = decryptedStrv + " " + matrixArray[i][j];
-                index++;
-                matrixIterator++;
+    let outputStr = "";
+    for (let i = 0; i < matrixArray[0].length; i++) {
+        for (let j = 0; j < matrixArray.length; j++) {
+            if (matrixArray[j][i] !== undefined) {
+                outputStr += matrixArray[j][i];
             }
-            else {
-                decryptedStrv += matrixArray[i][j];
-            }
-            matrixIterator++;
         }
     }
-    document.querySelector('.display').innerText = decryptedStrv;
+    decryptedString(outputStr, whitespace);
+}
+function decryptedString(decryptedStrv, whitespace) {
+    let space = 0;
+    let whitespacecounter = 0;
+    let decryptedString = "";
+    for (let i = 0; i < decryptedStrv.length; i++) {
+        if (i == (+whitespace[whitespacecounter] - space)) {
+            decryptedString += " ";
+            space++;
+            whitespacecounter++;
+        }
+        decryptedString += decryptedStrv.charAt(i);
+    }
+    document.querySelector('.display').style.display = "block";
+    document.querySelector('.display').innerText = decryptedString;
 }
